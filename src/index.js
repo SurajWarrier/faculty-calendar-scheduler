@@ -1,3 +1,3 @@
-const server = require('./server.js')
+const serverRouter = require('./server');
 let PORT=3000;
-server.listen(PORT,()=>console.log(`Listening to port ${PORT}`))
+serverRouter.app.listen(PORT,()=>console.log(`Listening to port ${PORT}`));

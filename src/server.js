@@ -1,15 +1,17 @@
-
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const multer = require('multer');
 const path = require("path");
-let upload = multer({ storage: multer.memoryStorage() });
+//let upload = multer({ storage: multer.memoryStorage() });
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ extended: true }));
+app.use(express.json());
 //app.use(express.static('views'))
 //app.set('view engine', 'ejs');
 //import * as path from "path";
+
+const loginRouter = require('./routes/logins/login');
+const addRemoveRouter = require('./routes/addremove/add.remove');
 
 const connection = mysql.createConnection({
     host: "127.0.0.1",
@@ -25,8 +27,10 @@ connection.connect(function (err) {
 });
 
 app.use(express.static(path.join(__dirname, '/../public')))
+app.use(loginRouter);
+app.use(addRemoveRouter);
 
-
+/*
 app.post('/login1', function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
@@ -34,7 +38,7 @@ app.post('/login1', function (req, res) {
     connection.query(`select * from faculty_login where username like '${username}' and password like '${password}'`, function (err, result) {
         console.log(result);
         if (err) {
-            return res.end('Error Occurred while login in!');
+            return res.end('Error Occurred while logins in!');
         }
         if (result.length === 0)
             return res.redirect('http://localhost:3000/alert1.html');
@@ -50,7 +54,7 @@ app.post('/login2', function (req, res) {
     connection.query(`select * from admin_login where username like '${username}' and password like '${password}'`, function (err, result) {
         console.log(result);
         if (err) {
-            return res.end('Error Occurred while login in!');
+            return res.end('Error Occurred while logins in!');
         }
         if (result.length === 0)
             return res.redirect('http://localhost:3000/alert.html');
@@ -118,5 +122,7 @@ app.post('/removecourse', function (req, res) {
         }
     });
 });
+*/
 
-module.exports = app;
+module.exports.connection = connection;
+module.exports.app = app;
