@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const multer = require('multer');
-var upload = multer({ storage: multer.memoryStorage() });
+let upload = multer({ storage: multer.memoryStorage() });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(express.static('views'))
