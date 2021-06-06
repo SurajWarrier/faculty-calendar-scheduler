@@ -1,14 +1,10 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const multer = require('multer');
 const path = require("path");
-//let upload = multer({ storage: multer.memoryStorage() });
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(express.static('views'))
-//app.set('view engine', 'ejs');
-//import * as path from "path";
 
 const loginRouter = require('./routes/logins/login');
 const addRemoveRouter = require('./routes/addremove/add.remove');
@@ -26,7 +22,7 @@ connection.connect(function (err) {
     console.log("Connected to DB");
 });
 
-app.use(express.static(path.join(__dirname, '/../public')))
+app.use(express.static(path.join(__dirname, '/public')))
 app.use(loginRouter);
 app.use(addRemoveRouter);
 
