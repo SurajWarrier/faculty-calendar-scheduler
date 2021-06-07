@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let calendarEl = document.getElementById('calendar');
     let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
+        editable: true,
         headerToolbar: {
             center: 'addEventButton'
         },
@@ -19,13 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     let title = prompt('Enter the title');
 
                     if (start && end) { // valid?
+                        scheduleEvents(title, start, end)
+                            .then(calendar.addEvent({
+                                title: title,
+                                start: start,
+                                end: end,
+                                allDay: false
+                            }));
 
-                        calendar.addEvent({
-                            title: title,
-                            start: start,
-                            end: end,
-                            allDay: false
-                        });
                         alert('Great. Event scheduled');
                     }
                     else {
@@ -63,14 +65,18 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(events);
         return events;
     }
-/*
+
     async function scheduleEvents(title, start, end) {
         const response = await fetch('/addEvents',{
-            method: 'post',
-            body: JSON.stringify({calno: curUserId, title: title, start: start, end: end})
+            method: 'POST',
+            body: JSON.stringify({title: title, start: start, end: end}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
+        console.log(response);
+        return response;
     }
- */
 
 });
 

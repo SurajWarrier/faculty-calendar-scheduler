@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const serverRouter = require('./../../server');
 
-//const loginRouter = require('./../logins/login')
 
 
 router.get('/calendar', function(req, res) {
@@ -21,19 +20,36 @@ router.get('/getEvents', function(req, res) {
         }
     });
 })
-/*
+
 router.post('/addEvents', function(req, res) {
-    let calno = req.body.calno;
+    console.log(req.body);
     let title = req.body.title;
-    let start = req.body.start;
-    let end = req.body.end;
-    serverRouter.connection.query(`insert into calendar_events values(${calno}, ${title}, ${start}, ${end}`, function(err, result) {
+    let start = toMysqlFormat(new Date(req.body.start));
+    let end = toMysqlFormat(new Date(req.body.end));
+    serverRouter.connection.query(`insert into calendar_events (calno, title, start, end) values(${curUserId}, '${title}', '${start}', '${end}')`, function(err, result) {
         if (err) throw err;
         else {
-            return res.status(200).json(result);
+            return res.json(result);
         }
     })
 })
- */
+
+
+function formatDate(date) {
+    let month = '' + (date.getMonth() + 1),
+        day = '' + date.getDate(),
+        year = date.getFullYear();
+    if (month.length < 2) {
+        month = '0' + month;
+    }
+    if (day.length < 2) {
+        day = '0' + day;
+    }
+    return [year, month, day].join('-');
+}
+function toMysqlFormat(date) {
+    return formatDate(date) + ' ' + date.toTimeString().split(' ')[0];
+}
+
 
 module.exports = router;
