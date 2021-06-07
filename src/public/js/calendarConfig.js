@@ -1,10 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     let calendarEl = document.getElementById('calendar');
     let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
+        slotDuration: '01:00',
         editable: true,
+        dayMaxEventRows: true,
+        nowIndicator: true,
+        expandRows: true,
+        slotEventOverlap: false,
+        fixedWeekCount: false,
         headerToolbar: {
-            center: 'addEventButton'
+            left: 'dayGridMonth,timeGridWeek,listWeek',
+            center: 'title,addEventButton',
+            right: 'today prev,next'
         },
         customButtons: {
             addEventButton: {
@@ -36,9 +44,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         },
-        events: retrEvents()
+        eventChange: async function(info) {
+            const response = await fetch('/updateEvent', {
+                method: 'POST',
+                body: JSON.stringify({eno: info.event.id, title: info.event.title, start: info.event.start, end: info.event.end}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log(response);
+            return response;
+        },
+        events: await retrEvents()
     });
 
+    console.log(calendar.getEvents());
+    /*
     // batch every modification into one re-render
     calendar.batchRendering(async () => {
         // remove all events
@@ -47,20 +68,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // add your new events
         newEvents.forEach(event => calendar.addEvent(event));
     });
+     */
 
     calendar.render();
 
-    console.log(calendar.getEvents());
+
 
     async function retrEvents() {
         const response = await fetch('/getEvents');
         console.log(response);
         const json = await response.json();
         console.log(json);
-        //let i = 0;
         let events = [];
         json.forEach(function(item) {
-            events.push({title: item.title, start: item.start, end: item.end});
+            events.push({id: item.eno, title: item.title, start: item.start, end: item.end});
         });
         console.log(events);
         return events;
@@ -77,6 +98,5 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(response);
         return response;
     }
-
 });
 

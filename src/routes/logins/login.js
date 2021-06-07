@@ -19,7 +19,6 @@ router.post('/login1', function (req, res) {
         else {
             let fno = result[0].fno;
             global.curUserId = fno;
-            console.log(fno);
             serverRouter.connection.query(`select * from faculty_calendars where fno like '${fno}'`, function(err, result) {
                 result = JSON.parse(JSON.stringify(result));
                 if (err) {
@@ -29,15 +28,14 @@ router.post('/login1', function (req, res) {
                     serverRouter.connection.query(`insert into faculty_calendars values(${fno}, ${fno})` , function (err, result) {
                         console.log(result);
                         if (err) {
-                            return res.end('Error Occurred while inserting calendar record!');
+                            console.log('Error Occurred while inserting calendar record!');
                         }
                         else{
-                            return res.end('Successfully entered calendar id');
+                            console.log('Successfully entered calendar id');
                         }
                     });
                 }
                 else {
-                    console.log(curUserId);
                     console.log("Calendar id is already present in the database");
                     res.redirect('http://localhost:3000/f_home.html');
                     //return res.status(200).json("username and password is correct");

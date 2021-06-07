@@ -12,9 +12,9 @@ router.get('/getEvents', function(req, res) {
     serverRouter.connection.query(`select * from calendar_events where calno like '${curUserId}'`, function(err, events) {
         if (err) throw err;
         else {
-            //events = JSON.parse(JSON.stringify(events));
-            console.log(curUserId);
-            console.log(events);
+            events = JSON.parse(JSON.stringify(events));
+            //console.log(curUserId);
+            //console.log(events);
             //return {title: events.title, start: events.start, end: events.end}
             return res.json(events);
         }
@@ -33,6 +33,21 @@ router.post('/addEvents', function(req, res) {
         }
     })
 })
+
+router.post('/updateEvent', function(req, res) {
+    console.log(req.body);
+    let eno = req.body.eno;
+    let title = req.body.title;
+    let start = toMysqlFormat(new Date(req.body.start));
+    let end = toMysqlFormat(new Date(req.body.end));
+    serverRouter.connection.query(`update calendar_events set title='${title}', start='${start}', end='${end}' where eno=${eno}`, function(err, result) {
+        if (err) throw err;
+        else {
+            return result;
+        }
+    })
+})
+
 
 
 function formatDate(date) {
