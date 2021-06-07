@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const serverRouter = require('./../../server');
 
+
 router.post('/login1', function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
     console.log(username,password);
     serverRouter.connection.query(`select * from faculty_login where username like '${username}' and password like '${password}'`, function (err, result) {
         result = JSON.parse(JSON.stringify(result));
-        let fno = result[0].fno;
-        console.log(fno);
         console.log(result);
         if (err) {
             return res.end('Error Occurred while login!');
@@ -18,6 +17,9 @@ router.post('/login1', function (req, res) {
             //return res.redirect('http://localhost:3000/alert1.html');
             return res.end('Incorrect Username/Password')
         else {
+            let fno = result[0].fno;
+            global.curUserId = fno;
+            console.log(fno);
             serverRouter.connection.query(`select * from faculty_calendars where fno like '${fno}'`, function(err, result) {
                 result = JSON.parse(JSON.stringify(result));
                 if (err) {
@@ -35,6 +37,7 @@ router.post('/login1', function (req, res) {
                     });
                 }
                 else {
+                    console.log(curUserId);
                     console.log("Calendar id is already present in the database");
                     res.redirect('http://localhost:3000/f_home.html');
                     //return res.status(200).json("username and password is correct");
@@ -62,5 +65,6 @@ router.post('/login2', function (req, res) {
             res.redirect('http://localhost:3000/a_home.html');
     });
 });
+
 
 module.exports = router;

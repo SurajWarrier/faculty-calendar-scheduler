@@ -9,7 +9,7 @@ router.post('/addfaculty', function (req, res) {
     let email = req.body.email;
     let phone = req.body.phone;
     console.log(fno,name,gender,email,phone);
-    serverRouter.connection.query(`insert into faculty_list values(${fno},'${name}','${gender}','${email}',${phone})` , function (err, result) {
+    serverRouter.connection.query(`insert into faculty_list values(${fno}, ${name}, ${gender}, ${email}, ${phone})` , function (err, result) {
         console.log(result);
         if (err) {
             return res.end('Error Occurred while inserting record!');
