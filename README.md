@@ -1,2 +1,2 @@
 # faculty-calendar-scheduler-backend
- backend
+To run, use: npm start
