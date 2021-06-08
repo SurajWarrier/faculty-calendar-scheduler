@@ -14,8 +14,8 @@ router.post('/login1', function (req, res) {
             return res.end('Error Occurred while login!');
         }
         if (result.length === 0)
-            //return res.redirect('http://localhost:3000/alert1.html');
-            return res.end('Incorrect Username/Password')
+            return res.redirect('http://localhost:3000/alert1.html');
+            //return res.end('Incorrect Username/Password')
         else {
             let fno = result[0].fno;
             global.curUserId = fno;
