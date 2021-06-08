@@ -18,11 +18,25 @@ document.addEventListener('DOMContentLoaded', async function() {
             addEventButton: {
                 text: 'Schedule Event',
                 click: function() {
+                    //let monthNames = [ "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" ];
+                    //let today = new Date();
+                    //let dateStr = prompt("Please enter date.", today.getFullYear()+"-"+monthNames[today.getMonth()]+"-"+today.getDate());
                     let dateStr = prompt('Enter a date in YYYY-MM-DD format');
-                    let startTime = prompt('Enter the start time in the format 00:00:00');
+                    /*
+                    if (dateStr != null) {
+                        let hh = today.getHours();
+                        let mm = today.getMinutes();
+                        let ss = today.getSeconds();
+                        let startTime = prompt('Enter the start time in the format 00:00:00', hh.toString()+":"+mm.toString()+":"+ss.toString());
+                        if (startTime != null) {
+
+                        }
+                    }
+                     */
+                    let startTime = prompt('Enter the start time in the format 00:00:00')
                     let endTime = prompt('Enter the end time in the format 00:00:00');
                     let start = dateStr.concat('T', startTime);
-                    let end = dateStr.concat('T', endTime)
+                    let end = dateStr.concat('T', endTime);
                     //let start = new Date(dateStr + startTime); // will be in local time
                     //let end = new Date(dateStr + endTime);
                     let title = prompt('Enter the title');

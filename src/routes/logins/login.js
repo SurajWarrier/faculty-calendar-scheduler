@@ -32,6 +32,7 @@ router.post('/login1', function (req, res) {
                         }
                         else{
                             console.log('Successfully entered calendar id');
+                            res.redirect('http://localhost:3000/f_home.html');
                         }
                     });
                 }

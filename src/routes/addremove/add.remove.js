@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const serverRouter = require('./../../server');
+const nodemailer = require('nodemailer');
+
 
 router.post('/addfaculty', function (req, res) {
     let fno = req.body.fno;
@@ -12,13 +14,44 @@ router.post('/addfaculty', function (req, res) {
     serverRouter.connection.query(`insert into faculty_list values(${fno}, '${name}', '${gender}', '${email}', '${phone}')` , function (err, result) {
         console.log(result);
         if (err) {
-            return res.end('Error Occurred while inserting record!');
+            throw err;
+            //return res.end('Error Occurred while inserting record!');
         }
         else{
-            return res.end('Successfully entered faculty details');
+            console.log('Successfully entered faculty details');
+            let sql = `INSERT INTO faculty_login values (${fno},'${name}', '${name}')`;
+            serverRouter.connection.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("1 record inserted");
+            });
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'csea.group7.se@gmail.com',
+                    pass: 'QWERTyuiop123'
+                }
+            });
+
+            let mailOptions = {
+                from: 'csea.group7.se@gmail.com',
+                to: email,
+                subject: 'New faculty Added',
+                text: 'You have been successfully added to the faculty database. The username given for your login is '+ name +' . Click the following link to reset your password so that you can login. '+ ' http://localhost:3000/reset_pass.html'
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+
+                }
+            });
+            res.redirect('http://localhost:3000/faculty_success.html');
         }
     });
 });
+
 router.post('/removefaculty', function (req, res) {
     let fno = req.body.fno;
     serverRouter.connection.query(`delete from faculty_list where fno = ${fno}` , function(err, result){
@@ -27,7 +60,13 @@ router.post('/removefaculty', function (req, res) {
             return res.end('Error Occurred while deleting record!');
         }
         else{
-            return res.end('Successfully deleted faculty from database');
+            console.log('Successfully deleted faculty from database');
+            let sql = `delete from faculty_login where fno = ${fno}`;
+            serverRouter.connection.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("1 record deleted");
+            });
+            res.redirect('http://localhost:3000/Rem_fac_success.html');
         }
     });
 });

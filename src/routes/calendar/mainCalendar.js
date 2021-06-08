@@ -24,9 +24,10 @@ router.get('/getEvents', function(req, res) {
 router.post('/addEvents', function(req, res) {
     console.log(req.body);
     let title = req.body.title;
+    let type = "Normal";
     let start = toMysqlFormat(new Date(req.body.start));
     let end = toMysqlFormat(new Date(req.body.end));
-    serverRouter.connection.query(`insert into calendar_events (calno, title, start, end) values(${curUserId}, '${title}', '${start}', '${end}')`, function(err, result) {
+    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${curUserId}, '${title}', '${type}', '${start}', '${end}')`, function(err, result) {
         if (err) throw err;
         else {
             return res.json(result);
@@ -40,7 +41,7 @@ router.post('/updateEvent', function(req, res) {
     let title = req.body.title;
     let start = toMysqlFormat(new Date(req.body.start));
     let end = toMysqlFormat(new Date(req.body.end));
-    serverRouter.connection.query(`update calendar_events set title='${title}', start='${start}', end='${end}' where eno=${eno}`, function(err, result) {
+    serverRouter.connection.query(`update calendar_events set title='${title}', start='${start}', end='${end}' where eno like ${eno}`, function(err, result) {
         if (err) throw err;
         else {
             return result;

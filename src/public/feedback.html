@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Email Composer Design Using Bootstrap 4.0</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="feed.css">
+    <!--<script src="js/jquery-main.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container main-section">
+		<div class="row">
+			<div class="col-lg-9 border main-section bg-white">
+				<div class="row">
+					<div class="col-lg-12 p-2">
+						<h3>Faculty Feedback Form</h3>
+					</div>
+				</div>
+
+					<div class="col-lg-8 messege-right p-3 border">
+						<div class="row m-0">
+							<div class="col-lg-12 bg-dark text-white">
+								<div class="row">
+									<div class="col-lg-6">
+										<h2 class="pt-2">Give feedback</h2>
+									</div>
+									<div class="col-lg-6 pt-2 message-box-icon">
+										<span class="pull-right">
+											<i class="fa fa-minus" aria-hidden="true"></i>
+											<i class="fa fa-arrows-alt" aria-hidden="true"></i>
+											<i class="fa fa-times" aria-hidden="true"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12 p-0 message-box-input">
+								<form>
+								  	<div class="form-group">
+								    	<input type="email" class="form-control" id="email1" aria-describedby="emailHelp" placeholder="From">
+								    	<input type="text" class="form-control" id="subject" aria-describedby="emailHelp" placeholder="Subject">
+								  		<textarea class="form-control" id="text" rows="6"></textarea>
+								  	</div>
+                                      <div class="co-lg-12 message-box-last-content p-2">
+                                        <input type="submit" class="btn btn-primary btn-sm pl-3 pr-3" value="SEND" onclick="alert('Feedback sent to admin')" >
+                                         
+                                    </div>  
+								 </form>
+							</div>
+                            <script>
+                                $('form').on('submit',(e) =>{
+                                    e.preventDefault();
+
+                                    const email= $('#email1').val().trim();
+                                    const subject = $('#subject').val().trim();
+                                    const text = $('#text').val().trim();
+                                    
+                                    const data = {
+                                        email,
+                                        subject,
+                                        text
+                                    };
+                                    $.post('/feedback',data,function() {
+                                        console.log('Server Received our data');
+                                    });
+                                });;
+                            </script>
+  
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
