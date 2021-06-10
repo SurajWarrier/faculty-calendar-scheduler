@@ -73,10 +73,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             }
         },
-        eventClick: function(info) {
-
-
-        },
         eventChange: async function(info) {
             const response = await fetch('/updateEvent', {
                 method: 'POST',
@@ -117,36 +113,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
         console.log(events);
         return events;
-    }
-
-    async function scheduleEvents(title, start, end) {
-        const response = await fetch('/addEvents',{
-            method: 'POST',
-            body: JSON.stringify({title: title, start: start, end: end}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        console.log(response);
-        return response;
-    }
-
-    async function removeEvent(eno) {
-        fetch('/deleteEvent', {
-            method: 'POST',
-            body: JSON.stringify({eno: eno}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((response) => {
-                console.log(response);
-                return response;
-            })
-            .catch((error) => {
-                console.error("error: ", error);
-            })
-
     }
 
     function formatDate(date) {
