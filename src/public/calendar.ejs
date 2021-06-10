@@ -17,7 +17,7 @@
 
 <div id='calendar'></div>
 
-<div id="myModal" class="modal">
+<div id="addEventModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
@@ -43,6 +43,52 @@
           <div class="form-group">
             <label class="control-label">End Time</label>
             <div class='input-group date' id='datetimepicker2'>
+              <input type='text' class="form-control" id="end" name="end"/>
+              <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+            </div>
+          </div>
+        </div>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<div id="removeEventModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="forms">
+      <form method="POST" action="/removeEvent" id="form-to-delete-event">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter the title">
+
+        <label for="type">Type</label>
+        <select id="type" name="type">
+          <option value="normal">Normal</option>
+          <option value="exam">Exam</option>
+        </select>
+
+        <div class='col-md-6'>
+          <div class="form-group">
+            <label class="control-label">Start Time</label>
+            <div class='input-group date' id='datetimepicker3'>
+              <input type='text' class="form-control" id="start" name="start"/>
+              <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-6'>
+          <div class="form-group">
+            <label class="control-label">End Time</label>
+            <div class='input-group date' id='datetimepicker4'>
               <input type='text' class="form-control" id="end" name="end"/>
               <span class="input-group-addon">
                      <span class="glyphicon glyphicon-calendar"></span>

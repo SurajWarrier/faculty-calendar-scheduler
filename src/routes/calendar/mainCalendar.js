@@ -32,6 +32,8 @@ router.get('/getId', function(req,res) {
     })
 })
 
+
+
 router.post('/addEvents', function(req, res) {
     console.log(req.body);
     let title = req.body.title;
@@ -62,14 +64,14 @@ router.post('/updateEvent', function(req, res) {
     })
 })
 
-router.post('/deleteEvent', function(req, res) {
+router.post('/removeEvent', function(req, res) {
     console.log(req.body);
     const eno = req.body.eno;
     serverRouter.connection.query(`delete from calendar_events where eno like ${eno}`, function(err, result) {
         if (err) throw err;
         console.log(result);
         console.log("event with id " + eno.toString() + " has been deleted!!!!!!!");
-        return result;
+        res.status(200).end();
     })
 })
 

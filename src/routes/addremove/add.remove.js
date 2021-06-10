@@ -44,7 +44,6 @@ router.post('/addfaculty', function (req, res) {
                     console.log(error);
                 } else {
                     console.log('Email sent: ' + info.response);
-
                 }
             });
             res.redirect('http://localhost:3000/faculty_success.html');

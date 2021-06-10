@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             addEventButton: {
                 text: 'Schedule Event',
                 click: async function() {
-                    let modal = document.getElementById("myModal");
+                    let modal = document.getElementById("addEventModal");
                     let span = document.getElementsByClassName("close")[0];
                     $(function () {
                         $('#datetimepicker1').datetimepicker({
@@ -41,96 +41,41 @@ document.addEventListener('DOMContentLoaded', async function() {
                         }
                     }
                     const form = document.getElementById("form-to-add-event");
-                    form.addEventListener("submit", handleFormSubmit);
-                    //let monthNames = [ "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" ];
-                    //let today = new Date();
-                    //let dateStr = prompt("Please enter date.", today.getFullYear()+"-"+monthNames[today.getMonth()]+"-"+today.getDate());
-                    /*
-                    if (dateStr != null) {
-                        let hh = today.getHours();
-                        let mm = today.getMinutes();
-                        let ss = today.getSeconds();
-                        let startTime = prompt('Enter the start time in the format 00:00:00', hh.toString()+":"+mm.toString()+":"+ss.toString());
-                        if (startTime != null) {
-
-                        }
-                    }
-                     */
-                    /*
-                    let dateStr = prompt('Enter a date in YYYY-MM-DD format');
-                    let startTime = prompt('Enter the start time in the format 00:00:00')
-                    let endTime = prompt('Enter the end time in the format 00:00:00');
-                    let start = dateStr.concat('T', startTime);
-                    let end = dateStr.concat('T', endTime);
-                    //let start = new Date(dateStr + startTime); // will be in local time
-                    //let end = new Date(dateStr + endTime);
-                    let title = prompt('Enter the title');
-
-                    if (start && end) { // valid?
-                        const response1 = await scheduleEvents(title, start, end);
-                        console.log(response1);
-                        let params = {title: title};
-                        let query = Object.keys(params)
-                            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-                            .join('&');
-                        let url = '/getId?' + query;
-                        console.log(url);
-                        const response2 = await fetch(url);
-                        console.log(response2);
-                        const json = await response2.json();
-                        console.log(json);
-                        console.log(json[0].eno);
-                        const eno = json[0].eno;
-                        calendar.addEvent({
-                            id: eno,
-                            title: title,
-                            start: start,
-                            end: end,
-                            allDay: false
-                        });
-                        alert('Great. Event scheduled');
-                    }
-                    else {
-                        alert('Invalid date.');
-                    }
-
-                     */
+                    form.addEventListener("submit", handleAddFormSubmit);
                 }
             },
             removeEventButton: {
                 text: 'Remove event',
                 click: function() {
-                    let title = prompt('Enter the title of the event to be deleted');
-                    if (title.length !== 0) {
-                        let eno;
-                        let i;
-                        let eventList = calendar.getEvents();
-                        console.log(eventList);
-                        for(i = 0; i < eventList.length; i++) {
-                            console.log(eventList[i].title);
-                            if (eventList[i].title === title) {
-                                console.log(eventList[i].id);
-                                eno = eventList[i].id;
-                                break;
-                            }
-                        }
-                        removeEvent(eno)
-                            .then( (r) => {
-                                console.log(r);
-                                const e = calendar.getEventById(eno);
-                                console.log(e);
-                                e.remove();
-                                console.log("Event removed from the calendar");
-                            })
-                            .catch( (error) => {
-                                console.error(("error: ", error));
-                            })
+                    let modal = document.getElementById("removeEventModal");
+                    let span = document.getElementsByClassName("close")[0];
+                    $(function () {
+                        $('#datetimepicker3').datetimepicker({
+                            format: "YYYY-MM-DD HH:mm:ss",
+                            minDate: formatDate(new Date())
+                        });
+                        $('#datetimepicker4').datetimepicker({
+                            format: "YYYY-MM-DD HH:mm:ss",
+                            minDate: formatDate(new Date())
+                        });
+                    });
+                    modal.style.display = "block";
+                    span.onclick = function() {
+                        modal.style.display = "none";
                     }
+                    window.onclick = function(mEvent) {
+                        if (mEvent.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+                    const form = document.getElementById("form-to-delete-event");
+                    form.addEventListener("submit", handleDeleteFormSubmit);
                 }
             }
         },
         eventClick: function(info) {
-            alert("Event " + info.event.title);
+
+
         },
         eventChange: async function(info) {
             const response = await fetch('/updateEvent', {
@@ -157,17 +102,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     console.log(calendar.getEvents());
-    console.log(calendar.getEventById(25))
-    /*
-    // batch every modification into one re-render
-    calendar.batchRendering(async () => {
-        // remove all events
-        calendar.getEvents().forEach(event => event.remove());
-        let newEvents = await retrEvents();
-        // add your new events
-        newEvents.forEach(event => calendar.addEvent(event));
-    });
-     */
 
     calendar.render();
 
@@ -198,15 +132,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     async function removeEvent(eno) {
-        /*
-        const response = await fetch('/deleteEvent', {
-            method: 'POST',
-            body: JSON.stringify({eno: eno}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-         */
         fetch('/deleteEvent', {
             method: 'POST',
             body: JSON.stringify({eno: eno}),
@@ -221,9 +146,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             .catch((error) => {
                 console.error("error: ", error);
             })
-        //console.log("hellloooo");
-        //console.log(response);
-        //return response;
+
     }
 
     function formatDate(date) {
@@ -241,11 +164,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
 
-    async function postFormDataAsJson({ url, formData }) {
-        const plainFormData = Object.fromEntries(formData.entries());
-        const formDataJsonString = JSON.stringify(plainFormData);
-        console.log(plainFormData.title);
-        console.log(formDataJsonString);
+    async function postAddFormDataAsJson({ url, formData }) {
+        const plainAddFormData = Object.fromEntries(formData.entries());
+        const addFormDataJsonString = JSON.stringify(plainAddFormData);
+        console.log(plainAddFormData.title);
+        console.log(addFormDataJsonString);
 
         const fetchOptions = {
             method: "POST",
@@ -253,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             },
-            body: formDataJsonString,
+            body: addFormDataJsonString,
         };
 
         const response = await fetch(url, fetchOptions);
@@ -262,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const errorMessage = await response.text();
             throw new Error(errorMessage);
         }
-        let params = {title: plainFormData.title};
+        let params = {title: plainAddFormData.title};
         let query = Object.keys(params)
             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
             .join('&');
@@ -274,9 +197,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log(json);
         console.log(json[0].eno);
         const eno = json[0].eno;
-        const title = plainFormData.title;
-        const start = plainFormData.start.replace(/\s/g, 'T')
-        const end = plainFormData.end.replace(/\s/g, 'T')
+        const title = plainAddFormData.title;
+        const start = plainAddFormData.start.replace(/\s/g, 'T')
+        const end = plainAddFormData.end.replace(/\s/g, 'T')
         console.log(start, end);
         calendar.addEvent({
             id: eno,
@@ -289,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
 
-    async function handleFormSubmit(event) {
+    async function handleAddFormSubmit(event) {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -298,7 +221,62 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         try {
             const formData = new FormData(form);
-            const responseData = await postFormDataAsJson({ url, formData });
+            const responseData = await postAddFormDataAsJson({ url, formData });
+
+            console.log({ responseData });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function postDeleteFormDataAsJson({ url, formData }) {
+        const plainDeleteFormData = Object.fromEntries(formData.entries());
+        console.log(plainDeleteFormData);
+        const deleteFormDataJsonString = JSON.stringify(plainDeleteFormData);
+        console.log(deleteFormDataJsonString);
+        let eno;
+        let i;
+        let eventList = calendar.getEvents();
+        console.log(eventList);
+        for(i = 0; i < eventList.length; i++) {
+            console.log(eventList[i].title);
+            if (eventList[i].title === plainDeleteFormData.title) {
+                console.log(eventList[i].id);
+                eno = eventList[i].id;
+                break;
+            }
+        }
+
+        const fetchOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({eno: eno})
+        };
+
+        const response = await fetch(url, fetchOptions)
+        console.log(response);
+        const e = calendar.getEventById(eno);
+        console.log(e);
+        e.remove();
+        console.log("Event removed from the calendar");
+        return;
+    }
+
+
+    async function handleDeleteFormSubmit(event) {
+
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        const url = form.action;
+        console.log(url);
+
+        try {
+            const formData = new FormData(form);
+            const responseData = await postDeleteFormDataAsJson({ url, formData });
 
             console.log({ responseData });
         }
