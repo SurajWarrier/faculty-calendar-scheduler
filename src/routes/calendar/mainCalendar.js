@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const serverRouter = require('./../../server');
 
+const serverRouter = require('./../../server');
+const schedule = require('node-schedule');
+const nodemailer = require('nodemailer');
 
 
 router.get('/calendar', function(req, res) {
@@ -32,7 +34,14 @@ router.get('/getId', function(req,res) {
     })
 })
 
-
+router.get('/getEmail', function(req, res) {
+    serverRouter.connection.query(`select * from faculty_list where fno like ${curUserId}`, function(err, result) {
+        if (err) throw err;
+        result = JSON.parse(JSON.stringify(result));
+        console.log(result);
+        return res.json(result);
+    })
+})
 
 router.post('/addEvents', function(req, res) {
     console.log(req.body);
@@ -42,13 +51,46 @@ router.post('/addEvents', function(req, res) {
     let end = req.body.end;
     //let start = toMysqlFormat(new Date(req.body.start));
     //let end = toMysqlFormat(new Date(req.body.end));
-    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${curUserId}, '${title}', '${type}', '${start}', '${end}')`, function(err, result) {
+    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${curUserId}, '${title}', '${type}', '${start}', '${end}')`, function (err, result) {
         if (err) throw err;
         else {
+            let sql = `select email from faculty_list where fno like ${curUserId}`;
+
+            serverRouter.connection.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log(result[0].email);
+                const date = new Date(start);
+
+                const job = schedule.scheduleJob(date.setMinutes(date.getMinutes() - 30), function () {
+                    console.log('The world is going to end today.');
+                    let transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: 'csea.group7.se@gmail.com',
+                            pass: 'QWERTyuiop123'
+                        }
+                    });
+
+                    let mailOptions = {
+                        from: 'csea.group7.se@gmail.com',
+                        to: result[0].email,
+                        subject: 'Reminder',
+                        text: 'You have a meeting titled - ' + title + ' at ' + start + ' . Reminder to attend the meeting'
+                    };
+
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                        }
+                    })
+                });
+            });
             return res.json(result);
         }
-    })
-})
+    });
+});
 
 router.post('/updateEvent', function(req, res) {
     console.log(req.body);
@@ -89,6 +131,7 @@ function formatDate(date) {
     }
     return [year, month, day].join('-');
 }
+
 function toMysqlFormat(date) {
     return formatDate(date) + ' ' + date.toTimeString().split(' ')[0];
 }

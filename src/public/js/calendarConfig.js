@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const errorMessage = await response.text();
             throw new Error(errorMessage);
         }
+
         let params = {title: plainAddFormData.title};
         let query = Object.keys(params)
             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
@@ -174,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             end: end,
             allDay: false
         });
-        return response.json();
+
     }
 
 
