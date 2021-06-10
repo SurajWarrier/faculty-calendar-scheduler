@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         expandRows: true,
         slotEventOverlap: false,
         fixedWeekCount: false,
+        eventDurationEditable: true,
         headerToolbar: {
             left: 'dayGridMonth,timeGridWeek,listWeek',
             center: 'title',
@@ -18,10 +19,32 @@ document.addEventListener('DOMContentLoaded', async function() {
             addEventButton: {
                 text: 'Schedule Event',
                 click: async function() {
+                    let modal = document.getElementById("myModal");
+                    let span = document.getElementsByClassName("close")[0];
+                    $(function () {
+                        $('#datetimepicker1').datetimepicker({
+                            format: "YYYY-MM-DD HH:mm:ss",
+                            minDate: formatDate(new Date())
+                        });
+                        $('#datetimepicker2').datetimepicker({
+                            format: "YYYY-MM-DD HH:mm:ss",
+                            minDate: formatDate(new Date())
+                        });
+                    });
+                    modal.style.display = "block";
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+                    window.onclick = function(mEvent) {
+                        if (mEvent.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+                    const form = document.getElementById("form-to-add-event");
+                    form.addEventListener("submit", handleFormSubmit);
                     //let monthNames = [ "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" ];
                     //let today = new Date();
                     //let dateStr = prompt("Please enter date.", today.getFullYear()+"-"+monthNames[today.getMonth()]+"-"+today.getDate());
-                    let dateStr = prompt('Enter a date in YYYY-MM-DD format');
                     /*
                     if (dateStr != null) {
                         let hh = today.getHours();
@@ -33,6 +56,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                         }
                     }
                      */
+                    /*
+                    let dateStr = prompt('Enter a date in YYYY-MM-DD format');
                     let startTime = prompt('Enter the start time in the format 00:00:00')
                     let endTime = prompt('Enter the end time in the format 00:00:00');
                     let start = dateStr.concat('T', startTime);
@@ -68,6 +93,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                     else {
                         alert('Invalid date.');
                     }
+
+                     */
                 }
             },
             removeEventButton: {
@@ -116,7 +143,17 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.log(response);
             return response;
         },
-        events: await retrEvents()
+        events: await retrEvents(),
+        eventTimeFormat: { // like '14:30:00'
+            hour: '2-digit',
+            minute: '2-digit',
+            meridiem: false,
+            hour12: false
+        },
+        eventColor: 'red',
+        eventBackgroundColor: 'red',
+        eventBorderColor: 'black',
+        eventTextColor: 'white'
     });
 
     console.log(calendar.getEvents());
@@ -188,5 +225,87 @@ document.addEventListener('DOMContentLoaded', async function() {
         //console.log(response);
         //return response;
     }
+
+    function formatDate(date) {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+
+    async function postFormDataAsJson({ url, formData }) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const formDataJsonString = JSON.stringify(plainFormData);
+        console.log(plainFormData.title);
+        console.log(formDataJsonString);
+
+        const fetchOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: formDataJsonString,
+        };
+
+        const response = await fetch(url, fetchOptions);
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(errorMessage);
+        }
+        let params = {title: plainFormData.title};
+        let query = Object.keys(params)
+            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+            .join('&');
+        let idUrl = '/getId?' + query;
+        console.log(idUrl);
+        const response2 = await fetch(idUrl);
+        console.log(response2);
+        const json = await response2.json();
+        console.log(json);
+        console.log(json[0].eno);
+        const eno = json[0].eno;
+        const title = plainFormData.title;
+        const start = plainFormData.start.replace(/\s/g, 'T')
+        const end = plainFormData.end.replace(/\s/g, 'T')
+        console.log(start, end);
+        calendar.addEvent({
+            id: eno,
+            title: title,
+            start: start,
+            end: end,
+            allDay: false
+        });
+        return response.json();
+    }
+
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        const url = form.action;
+        console.log(url);
+
+        try {
+            const formData = new FormData(form);
+            const responseData = await postFormDataAsJson({ url, formData });
+
+            console.log({ responseData });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
 });
 

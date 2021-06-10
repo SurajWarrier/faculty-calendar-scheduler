@@ -36,8 +36,10 @@ router.post('/addEvents', function(req, res) {
     console.log(req.body);
     let title = req.body.title;
     let type = "Normal";
-    let start = toMysqlFormat(new Date(req.body.start));
-    let end = toMysqlFormat(new Date(req.body.end));
+    let start = req.body.start;
+    let end = req.body.end;
+    //let start = toMysqlFormat(new Date(req.body.start));
+    //let end = toMysqlFormat(new Date(req.body.end));
     serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${curUserId}, '${title}', '${type}', '${start}', '${end}')`, function(err, result) {
         if (err) throw err;
         else {

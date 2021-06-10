@@ -3,12 +3,59 @@
 <head>
   <meta charset='utf-8' />
   <link href='fullcalendar/main.css' rel='stylesheet'/>
+  <link href='css/modal.css' rel='stylesheet'/>
   <script src='fullcalendar/main.js'></script>
   <script src="js/calendarConfig.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
 
 <div id='calendar'></div>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="forms">
+      <form method="POST" action="/addEvents" id="form-to-add-event">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter the title">
+
+        <div class='col-md-6'>
+          <div class="form-group">
+            <label class="control-label">Start Time</label>
+            <div class='input-group date' id='datetimepicker1'>
+              <input type='text' class="form-control" id="start" name="start"/>
+              <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-6'>
+          <div class="form-group">
+            <label class="control-label">End Time</label>
+            <div class='input-group date' id='datetimepicker2'>
+              <input type='text' class="form-control" id="end" name="end"/>
+              <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                     </span>
+            </div>
+          </div>
+        </div>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+
+</div>
 
 </body>
 </html>
