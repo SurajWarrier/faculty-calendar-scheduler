@@ -21,6 +21,17 @@ router.get('/getEvents', function(req, res) {
     });
 })
 
+router.get('/getId', function(req,res) {
+    console.log(req.query);
+    const title = req.query.title;
+    serverRouter.connection.query(`select * from calendar_events where title like '${title}' and calno like ${curUserId}`, function(err, result) {
+        if (err) throw err;
+        result = JSON.parse(JSON.stringify(result));
+        console.log(result);
+        return res.json(result);
+    })
+})
+
 router.post('/addEvents', function(req, res) {
     console.log(req.body);
     let title = req.body.title;
@@ -46,6 +57,17 @@ router.post('/updateEvent', function(req, res) {
         else {
             return result;
         }
+    })
+})
+
+router.post('/deleteEvent', function(req, res) {
+    console.log(req.body);
+    const eno = req.body.eno;
+    serverRouter.connection.query(`delete from calendar_events where eno like ${eno}`, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        console.log("event with id " + eno.toString() + " has been deleted!!!!!!!");
+        return result;
     })
 })
 

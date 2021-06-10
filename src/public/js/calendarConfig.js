@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         fixedWeekCount: false,
         headerToolbar: {
             left: 'dayGridMonth,timeGridWeek,listWeek',
-            center: 'title,addEventButton',
-            right: 'today prev,next'
+            center: 'title',
+            right: 'addEventButton removeEventButton today prev,next'
         },
         customButtons: {
             addEventButton: {
                 text: 'Schedule Event',
-                click: function() {
+                click: async function() {
                     //let monthNames = [ "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" ];
                     //let today = new Date();
                     //let dateStr = prompt("Please enter date.", today.getFullYear()+"-"+monthNames[today.getMonth()]+"-"+today.getDate());
@@ -42,21 +42,68 @@ document.addEventListener('DOMContentLoaded', async function() {
                     let title = prompt('Enter the title');
 
                     if (start && end) { // valid?
-                        scheduleEvents(title, start, end)
-                            .then(calendar.addEvent({
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: false
-                            }));
-
+                        const response1 = await scheduleEvents(title, start, end);
+                        console.log(response1);
+                        let params = {title: title};
+                        let query = Object.keys(params)
+                            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+                            .join('&');
+                        let url = '/getId?' + query;
+                        console.log(url);
+                        const response2 = await fetch(url);
+                        console.log(response2);
+                        const json = await response2.json();
+                        console.log(json);
+                        console.log(json[0].eno);
+                        const eno = json[0].eno;
+                        calendar.addEvent({
+                            id: eno,
+                            title: title,
+                            start: start,
+                            end: end,
+                            allDay: false
+                        });
                         alert('Great. Event scheduled');
                     }
                     else {
                         alert('Invalid date.');
                     }
                 }
+            },
+            removeEventButton: {
+                text: 'Remove event',
+                click: function() {
+                    let title = prompt('Enter the title of the event to be deleted');
+                    if (title.length !== 0) {
+                        let eno;
+                        let i;
+                        let eventList = calendar.getEvents();
+                        console.log(eventList);
+                        for(i = 0; i < eventList.length; i++) {
+                            console.log(eventList[i].title);
+                            if (eventList[i].title === title) {
+                                console.log(eventList[i].id);
+                                eno = eventList[i].id;
+                                break;
+                            }
+                        }
+                        removeEvent(eno)
+                            .then( (r) => {
+                                console.log(r);
+                                const e = calendar.getEventById(eno);
+                                console.log(e);
+                                e.remove();
+                                console.log("Event removed from the calendar");
+                            })
+                            .catch( (error) => {
+                                console.error(("error: ", error));
+                            })
+                    }
+                }
             }
+        },
+        eventClick: function(info) {
+            alert("Event " + info.event.title);
         },
         eventChange: async function(info) {
             const response = await fetch('/updateEvent', {
@@ -73,6 +120,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     console.log(calendar.getEvents());
+    console.log(calendar.getEventById(25))
     /*
     // batch every modification into one re-render
     calendar.batchRendering(async () => {
@@ -85,7 +133,6 @@ document.addEventListener('DOMContentLoaded', async function() {
      */
 
     calendar.render();
-
 
 
     async function retrEvents() {
@@ -111,6 +158,35 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
         console.log(response);
         return response;
+    }
+
+    async function removeEvent(eno) {
+        /*
+        const response = await fetch('/deleteEvent', {
+            method: 'POST',
+            body: JSON.stringify({eno: eno}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+         */
+        fetch('/deleteEvent', {
+            method: 'POST',
+            body: JSON.stringify({eno: eno}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then((response) => {
+                console.log(response);
+                return response;
+            })
+            .catch((error) => {
+                console.error("error: ", error);
+            })
+        //console.log("hellloooo");
+        //console.log(response);
+        //return response;
     }
 });
 
