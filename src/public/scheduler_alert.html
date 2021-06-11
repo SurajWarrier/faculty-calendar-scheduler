@@ -28,7 +28,7 @@
             <div class="card-heading"></div>
             <div class="card-body">
                 <h2 class="title">Scheduling Event</h2>
-                <form method="POST" action="http://34.121.14.80:/scheduleAdmin">
+                <form method="POST" action="http://34.121.14.80:/scheduler">
                     <div class="input-group">
                         <input class="input--style-3" type="text" placeholder="Name" name="name">
                     </div>
@@ -39,10 +39,10 @@
 
                     <div class="input-group">
                         <div class="rs-select2 js-select-simple select--no-search">
-                            <select name="Type" type="text">
+                            <select name="Type">
                                 <option disabled="disabled" selected="selected">type</option>
-                                <option value="normal">Normal</option>
-                                <option value="exam">Exam</option>
+                                <option>Normal</option>
+                                <option>Exam</option>
 
                             </select>
                             <div class="select-dropdown"></div>
@@ -105,6 +105,12 @@
 
 <!-- Main JS-->
 <script src="js/formglobal.js"></script>
+
+<script>
+        
+    alert("Adding an event failed");
+  
+  </script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
