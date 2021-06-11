@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const ejs = require('ejs');
 const mysql = require('mysql');
-//comment
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
