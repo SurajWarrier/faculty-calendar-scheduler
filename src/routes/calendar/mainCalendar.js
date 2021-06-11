@@ -51,7 +51,6 @@ router.post('/scheduleAdmin', function(req, res) {
     let title = req.body.name;
     let calno = req.body.fno
     let type = req.body.type;
-    //some comment
     //let start = req.body.sdate.concat('T', req.body.stime);
     //let end = req.body.edate.concat('T', req.body.etime);
     let start = toMysqlFormat(new Date(req.body.sdate.concat('T', req.body.stime)));
