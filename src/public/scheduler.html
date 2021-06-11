@@ -28,7 +28,7 @@
             <div class="card-heading"></div>
             <div class="card-body">
                 <h2 class="title">Scheduling Event</h2>
-                <form method="POST" action="http://34.121.14.80:/scheduler">
+                <form method="POST" action="http://34.121.14.80:/scheduleAdmin">
                     <div class="input-group">
                         <input class="input--style-3" type="text" placeholder="Name" name="name">
                     </div>
@@ -41,8 +41,8 @@
                         <div class="rs-select2 js-select-simple select--no-search">
                             <select name="Type">
                                 <option disabled="disabled" selected="selected">type</option>
-                                <option>Normal</option>
-                                <option>Exam</option>
+                                <option value="normal">Normal</option>
+                                <option value="exam">Exam</option>
 
                             </select>
                             <div class="select-dropdown"></div>
