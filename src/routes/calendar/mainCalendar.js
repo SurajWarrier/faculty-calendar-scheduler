@@ -48,14 +48,13 @@ router.get('/getEmail', function(req, res) {
 
 router.post('/scheduleAdmin', function(req, res) {
     console.log(req.body);
-    let title = req.body.name;
-    let calno = req.body.fno
+    let title = req.body.title;
     let type = req.body.type;
     //let start = req.body.sdate.concat('T', req.body.stime);
     //let end = req.body.edate.concat('T', req.body.etime);
     let start = toMysqlFormat(new Date(req.body.sdate.concat('T', req.body.stime)));
     let end = toMysqlFormat(new Date(req.body.edate.concat('T', req.body.etime)));
-    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${calno}, '${title}', '${type}', '${start}', '${end}')`, function (err, result) {
+    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${curUserId}, '${title}', '${type}', '${start}', '${end}')`, function (err, result) {
         if (err) throw err;
         else {
             console.log("Entered into the database!!!!!!");
