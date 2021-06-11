@@ -61,6 +61,7 @@ router.post('/scheduleAdmin', function(req, res) {
             return res.json(result);
         }
     })
+});
 
 router.post('/addEvents', function(req, res) {
     console.log(req.body);
