@@ -28,23 +28,22 @@
             <div class="card-heading"></div>
             <div class="card-body">
                 <h2 class="title">Scheduling Event</h2>
-                <form method="POST" action="http://localhost:3000/scheduleAdmin">
+                <form method="POST" action="http://localhost:3000:/scheduler">
                     <div class="input-group">
-                        <label for="title">Title</label>
-                        <input class="input--style-3" id="title" type="text" placeholder="Title" name="title">
+                        <input class="input--style-3" type="text" placeholder="Name" name="name">
                     </div>
 
                     <div class="input-group">
-                        <label for="fno">Faculty-No</label>
-                        <input class="input--style-3" id="fno" type="text" placeholder="Faculty-No" name="fno">
+                        <input class="input--style-3" type="text" placeholder="Faculty-No." name="fno">
                     </div>
 
                     <div class="input-group">
                         <div class="rs-select2 js-select-simple select--no-search">
-                            <label for="type">Type</label>
-                            <select id="type" name="type">
-                                <option value="normal">Normal</option>
-                                <option value="exam">Exam</option>
+                            <select name="Type">
+                                <option disabled="disabled" selected="selected">type</option>
+                                <option>Normal</option>
+                                <option>Exam</option>
+
                             </select>
                             <div class="select-dropdown"></div>
                         </div>
@@ -101,6 +100,12 @@
 
 <!-- Main JS-->
 <script src="js/formglobal.js"></script>
+
+<script>
+        
+    alert("Adding an event failed");
+  
+  </script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Title Page-->
-    <title>Add/Remove Course</title>
+    <title>Add/Remove Faculty</title>
 
     <!-- Icons font CSS-->
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -40,9 +40,9 @@
                                                 <div class="tab-btn">
                                                     <!-- <a href="#" class="add-tab active">Add Faculty</a>  
                                                     <a href="#" class="remove-tab">Remove Faculty</a> -->
-                                                    <button class="add-tab active" onclick="getPage('AddContent')" id="defaultOpen">Add Course</button></div>
+                                                    <button class="add-tab active" onclick="getPage('AddContent')" id="defaultOpen">Add Faculty</button></div>
                                                 <div class="tab-btn1">    
-                                                    <button class="remove-tab" onclick="getPage('RemoveContent')">Remove Course</button>
+                                                    <button class="remove-tab" onclick="getPage('RemoveContent')">Remove Faculty</button>
                                                   </div>
                                 
             <div class="card card-3">
@@ -56,23 +56,19 @@
                 <div id = "AddContent" class="Add">
                 <div class="card-body">
                     <h2 class="title">Registration Info</h2>
-                    <form method="POST" id="addfac" action="http://localhost:3000/addcourse">
+                    <form method="POST" id="addfac" action="http://localhost:3000/addfaculty">
                         <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Code" name="code">
+                            <input class="input--style-3" type="text" placeholder="Faculty_Number" name="fno">
                         </div>
                         <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Credits" name="cred">
+                            <input class="input--style-3" type="text" placeholder="Name" name="name">
                         </div>
-                        <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Course Name" name="cname">
-                        </div>
-                        
                         <!--<div class="input-group">
                             <input class="input--style-3 js-datepicker" type="text" placeholder="Birthdate" name="birthday">
                             <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                         </div>-->
 
-                       <!-- <div class="input-group">
+                        <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select name="gender">
                                     <option disabled="disabled" selected="selected">Gender</option>
@@ -88,7 +84,7 @@
                         </div>
                         <div class="input-group">
                             <input class="input--style-3" type="text" placeholder="Phone" name="phone">
-                        </div>-->
+                        </div>
                         <div class="p-t-10">
                             <button class="btn btn--pill btn--green" type="submit">Submit</button>
                         </div>
@@ -99,9 +95,9 @@
                 <div id = "RemoveContent" class="Remove">
                 <div class="card-body">
                     <h2 class="title">Remove Info</h2>
-                    <form method="POST" id="remfac" action="http://localhost:3000/removecourse">
+                    <form method="POST" id="remfac" action="http://localhost:3000/removefaculty">
                         <div class="input-group">
-                            <input class="input--style-3" type="text" placeholder="Course_Code" name="code">
+                            <input class="input--style-3" type="text" placeholder="Faculty_Number" name="fno">
                         </div>
                         <div class="p-t-10">
                             <button class="btn btn--pill btn--green" type="submit">Submit</button>
@@ -114,7 +110,6 @@
             </div>
         </div>
     </div>
-    </div>--main
     <!-- Jquery JS-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <!-- Vendor JS-->
@@ -124,8 +119,12 @@
 
     <!-- Main JS-->
     <script src="js/global.js"></script>
-    
 
+    <script>
+        
+        alert("Adding or Removing a faculty failed");
+      
+      </script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
 </html>

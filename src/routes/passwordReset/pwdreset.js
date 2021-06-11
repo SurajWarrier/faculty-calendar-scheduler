@@ -11,10 +11,10 @@ router.post('/f_pass', function (req, res) {
         console.log(result);
         if (err) {
             console.log(err);
-            res.redirect('http://34.121.14.80:/f_pass_alert.html');
+            res.redirect('http://localhost:3000/f_pass_alert.html');
         }
         if (result.length === 0)
-            res.redirect('http://34.121.14.80:/f_pass_alert.html');
+            res.redirect('http://localhost:3000/f_pass_alert.html');
         else {
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -28,7 +28,7 @@ router.post('/f_pass', function (req, res) {
                 from: 'csea.group7.se@gmail.com',
                 to: email,
                 subject: 'Reset Password request',
-                text: 'If you want to reset your password click the following link ' + 'http://34.121.14.80:/reset_pass.html'
+                text: 'If you want to reset your password click the following link ' + 'http://localhost:3000/reset_pass.html'
             };
 
             transporter.sendMail(mailOptions, function(error, info){
@@ -37,7 +37,7 @@ router.post('/f_pass', function (req, res) {
                 }
                 else {
                     console.log('Email sent: ' + info.response);
-                    res.redirect('http://34.121.14.80:/f_login.html');
+                    res.redirect('http://localhost:3000/f_login.html');
                 }
             });
         }
@@ -57,13 +57,13 @@ router.post('/reset', function (req, res) {
                 return res.end('Error Occurred while loggin in!');
             }
             if (result.length === 0)
-                res.redirect('http://34.121.14.80:/reset_pass_alert.html');
+                res.redirect('http://localhost:3000/reset_pass_alert.html');
             else
-                res.redirect('http://34.121.14.80:/pass_success.html');
+                res.redirect('http://localhost:3000/pass_success.html');
         });
     }
     else
-        res.redirect('http://34.121.14.80:/reset_pass_alert.html');
+        res.redirect('http://localhost:3000/reset_pass_alert.html');
 
 });
 

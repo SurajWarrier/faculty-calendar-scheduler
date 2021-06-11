@@ -229,7 +229,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log(e);
         e.remove();
         console.log("Event removed from the calendar");
-        return;
     }
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login!</title>
+	<title>Password Change</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -10,51 +10,49 @@
 
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/buttons2.css">
 
 </head>
 <body>
-	
-	<div class="limiter">
-		<div class="container-login100" style="background-image: url('images/img-3.jpg');">
-			<div class="wrap-login100 p-t-30 p-b-50">
-				<span class="login100-form-title p-b-41">
-					New password
+
+<div class="limiter">
+	<div class="container-login100" style="background-image: url('images/bg6.jpeg');  background-repeat: no-repeat; background-attachment: fixed; background-size: 100% 100%;">
+		<h1 class="" style="color:rgb(255, 255, 255); position: absolute; left: 640px; top:40px;  text-shadow: 2px 2px 8px #f0850c; font-size: 50px;"><b>Password Change</b></h1>
+		<div class="wrap-login100 p-t-30 p-b-50" style="position: absolute; left: 550px; width: 500px;">
+				<span class="login100-form-title p-b-41" style="left: 10px; ">
+
 				</span>
-				<form class="login100-form validate-form p-b-33 p-t-5", action="http://34.121.14.80:/reset" method="post">
-                    <div class="wrap-input100 validate-input" data-validate = "Enter username">
-						<input class="input100" type="text" name="username" placeholder="Enter username">
-						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
-					</div>
+			<form class="login100-form validate-form p-b-33 p-t-5" action="http://localhost:3000/reset" method="post">
 
-					<div class="wrap-input100 validate-input" data-validate = "Enter new password">
-						<input class="input100" type="password" name="password" placeholder="New Password">
-						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
-					</div>
-                    <div class="wrap-input100 validate-input" data-validate = "Confirm new password">
-						<input class="input100" type="password" name="cpassword" placeholder="Confirm Password">
-						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
-					</div>
+				<div class="wrap-input100 validate-input" data-validate = "Enter Username">
+					<input class="input100" type="text" name="username" placeholder="Enter username" style="position:relative; left: 110px;">
 
-					
-
-					<div class="container-login100-form-btn m-t-32">
-						<button class="login100-form-btn">
-							Submit
-						</button>
-						
-						
-					</div>
-
-					<br>
-					
-					</a>
-		
 				</div>
-			</div>
+
+				<div class="wrap-input100 validate-input" data-validate="Enter new password">
+					<input class="input100" type="password" name="password" placeholder="New Password" style="position:relative; left: 110px;">
+
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate="Confirm password">
+					<input class="input100" type="password" name="cpassword" placeholder="Confirm Password" style="position:relative; left: 110px;">
+
+				</div>
+
+				<div class="container-login100-form-btn m-t-32">
+					<button class="login100-form-btn">
+						Submit
+					</button>
+				</div>
+
+				<br>
+
 			</form>
-			</div>
+		</div>
 	</div>
-	
+
+</div>
+
 
 </body>
 </html>

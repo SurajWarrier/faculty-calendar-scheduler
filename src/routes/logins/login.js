@@ -14,7 +14,7 @@ router.post('/login1', function (req, res) {
             return res.end('Error Occurred while login!');
         }
         if (result.length === 0)
-            return res.redirect('http://34.121.14.80:/alert1.html');
+            return res.redirect('http://localhost:3000/alert1.html');
             //return res.end('Incorrect Username/Password')
         else {
             let fno = result[0].fno;
@@ -32,13 +32,13 @@ router.post('/login1', function (req, res) {
                         }
                         else{
                             console.log('Successfully entered calendar id');
-                            res.redirect('http://34.121.14.80:/f_home.html');
+                            res.redirect('http://localhost:3000/f_home.html');
                         }
                     });
                 }
                 else {
                     console.log("Calendar id is already present in the database");
-                    res.redirect('http://34.121.14.80:/f_home.html');
+                    res.redirect('http://localhost:3000/f_home.html');
                     //return res.status(200).json("username and password is correct");
                 }
             });
@@ -59,9 +59,9 @@ router.post('/login2', function (req, res) {
         }
         if (result.length === 0)
             return res.end('Incorrect Username/Password')
-            //return res.redirect('http://34.121.14.80:/alert.html');
+            //return res.redirect('http://localhost:3000/alert.html');
         else
-            res.redirect('http://34.121.14.80:/a_home.html');
+            res.redirect('http://localhost:3000/a_home.html');
     });
 });
 

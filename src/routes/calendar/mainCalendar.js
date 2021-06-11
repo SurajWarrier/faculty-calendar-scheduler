@@ -49,12 +49,13 @@ router.get('/getEmail', function(req, res) {
 router.post('/scheduleAdmin', function(req, res) {
     console.log(req.body);
     let title = req.body.title;
+    let fno = req.body.fno;
     let type = req.body.type;
     //let start = req.body.sdate.concat('T', req.body.stime);
     //let end = req.body.edate.concat('T', req.body.etime);
     let start = toMysqlFormat(new Date(req.body.sdate.concat('T', req.body.stime)));
     let end = toMysqlFormat(new Date(req.body.edate.concat('T', req.body.etime)));
-    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${curUserId}, '${title}', '${type}', '${start}', '${end}')`, function (err, result) {
+    serverRouter.connection.query(`insert into calendar_events (calno, title, type, start, end) values(${fno}, '${title}', '${type}', '${start}', '${end}')`, function (err, result) {
         if (err) throw err;
         else {
             console.log("Entered into the database!!!!!!");
@@ -66,7 +67,7 @@ router.post('/scheduleAdmin', function(req, res) {
 router.post('/addEvents', function(req, res) {
     console.log(req.body);
     let title = req.body.title;
-    let type = "Normal";
+    let type = "normal";
     let start = req.body.start;
     let end = req.body.end;
     //let start = toMysqlFormat(new Date(req.body.start));
@@ -81,7 +82,7 @@ router.post('/addEvents', function(req, res) {
                 console.log(result[0].email);
                 const date = new Date(start);
 
-                const job = schedule.scheduleJob(date.setMinutes(date.getMinutes() - 30), function () {
+                schedule.scheduleJob(date.setMinutes(date.getMinutes() - 30), function () {
                     console.log('The world is going to end today.');
                     let transporter = nodemailer.createTransport({
                         service: 'gmail',
@@ -121,7 +122,9 @@ router.post('/updateEvent', function(req, res) {
     serverRouter.connection.query(`update calendar_events set title='${title}', start='${start}', end='${end}' where eno like ${eno}`, function(err, result) {
         if (err) throw err;
         else {
-            return result;
+            console.log(result);
+            console.log("event with id " + eno.toString() + " has been modified!!!!!!!");
+            res.status(200).end();
         }
     })
 })

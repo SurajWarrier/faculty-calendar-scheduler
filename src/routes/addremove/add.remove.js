@@ -36,7 +36,7 @@ router.post('/addfaculty', function (req, res) {
                 from: 'csea.group7.se@gmail.com',
                 to: email,
                 subject: 'New faculty Added',
-                text: 'You have been successfully added to the faculty database. The username given for your login is '+ name +' . Click the following link to reset your password so that you can login. '+ ' http://34.121.14.80:/reset_pass.html'
+                text: 'You have been successfully added to the faculty database. The username given for your login is '+ name +' . Click the following link to reset your password so that you can login. '+ ' http://localhost:3000/reset_pass.html'
             };
 
             transporter.sendMail(mailOptions, function(error, info){
@@ -46,7 +46,7 @@ router.post('/addfaculty', function (req, res) {
                     console.log('Email sent: ' + info.response);
                 }
             });
-            res.redirect('http://34.121.14.80:/faculty_success.html');
+            res.redirect('http://localhost:3000/faculty_success.html');
         }
     });
 });
@@ -65,7 +65,7 @@ router.post('/removefaculty', function (req, res) {
                 if (err) throw err;
                 console.log("1 record deleted");
             });
-            res.redirect('http://34.121.14.80:/Rem_fac_success.html');
+            res.redirect('http://localhost:3000/Rem_fac_success.html');
         }
     });
 });

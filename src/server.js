@@ -12,8 +12,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/public'))
 
 const connection = mysql.createConnection({
-    host: "34.121.14.80",
-    user: "suraj",
+    host: "127.0.0.1",
+    user: "root",
     password: "Kuttans25",
     port: "3306",
     database: "mydb"
