@@ -1,6 +1,0 @@
-When a new faculty is entered into the database, create an instance of a calendar for that faculty.
-=========table - faculty_calendars==========
-columns - calno (primary key), fno (foreign key)
-
-=========table - calendar_events============
-columns - eno, calno, type, title, start, end

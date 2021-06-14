@@ -19,13 +19,13 @@ router.post('/f_pass', function (req, res) {
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'csea.group7.se@gmail.com',
-                    pass: 'QWERTyuiop123'
+                    user: 'email here',
+                    pass: 'passwordhere'
                 }
             });
 
             let mailOptions = {
-                from: 'csea.group7.se@gmail.com',
+                from: 'email here',
                 to: email,
                 subject: 'Reset Password request',
                 text: 'If you want to reset your password click the following link ' + 'http://localhost:3000/reset_pass.html'

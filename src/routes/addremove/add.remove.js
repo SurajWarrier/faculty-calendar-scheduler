@@ -27,13 +27,13 @@ router.post('/addfaculty', function (req, res) {
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'csea.group7.se@gmail.com',
-                    pass: 'QWERTyuiop123'
+                    user: 'emailhere',
+                    pass: 'passwordhere'
                 }
             });
 
             let mailOptions = {
-                from: 'csea.group7.se@gmail.com',
+                from: 'email',
                 to: email,
                 subject: 'New faculty Added',
                 text: 'You have been successfully added to the faculty database. The username given for your login is '+ name +' . Click the following link to reset your password so that you can login. '+ ' http://localhost:3000/reset_pass.html'
